@@ -1,10 +1,39 @@
 // Module imports
 import express from 'express'
 import nunjucks from 'nunjucks'
+import mongoose from 'mongoose'
+import session from 'express-session'
+const MongoStore = require('connect-mongo')(session)
 const app = express()
 
 // Custom imports and variables
 import routes from './routes'
+
+// Connect to our database and set up our sessions
+mongoose.connect(process.env.MONGODB || `mongodb://localhost/${process.env.npm_package_name}`, {
+    useNewUrlParser: true
+})
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', () => {
+    app.use(session({
+        secret: 'fluffybunnies1231247753',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 1800000 // 30 minutes (milliseconds)
+        },
+        store: new MongoStore({
+            mongooseConnection: db 
+        })
+    }))
+})
+
+// Save our session as a local variable for each client accessible by the templates
+app.use((req, res, next) => {
+    res.locals.session = req.session
+    next()
+})
 
 // Configure nunjucks
 nunjucks.configure('views', {
