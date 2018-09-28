@@ -5,7 +5,6 @@ import pages from './controllers/pages'
 
 // Some middleware we run on all routes eg. storing session as local variable
 router.use((req,res, next) => {
-    console.log(`${req.method} ${req.url}` )
     next()
 })
 

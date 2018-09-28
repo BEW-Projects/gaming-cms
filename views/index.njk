@@ -1,3 +1,9 @@
-Welcome to {{ name }}!
-<hr \>
-<a href="/pages">Pages</a> | <a href="/pages?title=Welcome&content=Lorem%20Ipsum">Pages w/ Params</a>
+{% block header %}
+<a href="/">Home</a> | <a href="/pages">Pages</a> | <a href="/pages?title=Welcome&content=Lorem%20Ipsum">Pages w/ Params</a>
+<hr / />
+{% endblock %}
+
+{% block body %}
+Welcome to {{ name | title }}!
+{% endblock %}
+
