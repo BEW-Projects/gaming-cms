@@ -1,16 +1,35 @@
-{% block header %}
-    <a href="/">Home</a> | <a href="/pages/new">New Page</a> | <a href="/pages?title=Welcome&content=Lorem%20Ipsum">A Link That Doesn't Work</a>
-    <hr / />
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ name }}</title>
+    
+    <link rel="stylesheet" href="{{ currentTheme }}/main.css" />
+</head>
+<body>
+    {% block header %}
+        <a href="/">Home</a> | <a href="/pages/new">New Page</a> | <a href="/pages?title=Welcome&content=Lorem%20Ipsum">A Link That Doesn't Work</a> | <a href="#" onclick="event.preventDefault();clickMe();">Javascript Test</a> <br>
+        <hr / />
+    {% endblock %}
 
-{% block body %}
-    <p>Welcome to {{ name | title }}!</p>
-    {% if pages | length %}
-        <hr />
-        <p>Pages:</p>
-        {% for page in pages %}
-            <a href="/pages?_id={{ page._id }}">{{ page.title }}</a><br>
-        {% endfor %}
-    {% endif %}
-{% endblock %}
+    {% block body %}
+        <p>Welcome to {{ name | title }}!</p>
+        {% if pages | length %}
+            <hr />
+            <p>Pages:</p>
+            {% for page in pages %}
+                <a href="/pages?_id={{ page._id }}">{{ page.title }}</a><br>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+    
+    <script src="{{ currentTheme }}/main.js"></script>
+</body>
+</html>
+
+
+
+
 
