@@ -27,7 +27,6 @@ exports.newPage = (req, res) => {
 
 exports.createPage = (req, res) => {
     // Create the page then render page
-    console.log(req.body);
     Page.create(req.body).then(page => {
         res.redirect(`pages?_id=${page._id}`)
     }).catch(err => { console.log(err) })
