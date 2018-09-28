@@ -1,0 +1,13 @@
+{% extends "index.njk" %}
+
+{% block body %}
+    {% block pagesNewForm %}
+    <form class="" action="/pages" method="post">
+        Title: <br>
+        <input type="text" name="title" value=""><br><br>
+        Content (with HTML): <br>
+        <textarea name="content" rows="8" cols="80"></textarea><br><br>
+        <button type="submit" name="button">Create</button>
+    </form>
+    {% endblock %}    
+{% endblock %}

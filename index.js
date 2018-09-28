@@ -3,6 +3,7 @@ import express from 'express'
 import nunjucks from 'nunjucks'
 import mongoose from 'mongoose'
 import session from 'express-session'
+import bodyParser from 'body-parser'
 const MongoStore = require('connect-mongo')(session)
 const app = express()
 
@@ -43,6 +44,8 @@ nunjucks.configure('views', {
 
 // Configure express
 app.set('view engine', 'njk')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use(routes)
 
 // Start our app

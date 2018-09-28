@@ -1,8 +1,0 @@
-{% extends "index.njk" %}
-{% block body %}
-    {% for key, value in params %}
-    <p>{{ key }} : {{ value }}</p>
-    {% else %}
-    <p>No params passed!</p>
-    {% endfor %}
-{% endblock %}

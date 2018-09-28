@@ -1,9 +1,16 @@
 {% block header %}
-<a href="/">Home</a> | <a href="/pages">Pages</a> | <a href="/pages?title=Welcome&content=Lorem%20Ipsum">Pages w/ Params</a>
-<hr / />
+    <a href="/">Home</a> | <a href="/pages/new">New Page</a> | <a href="/pages?title=Welcome&content=Lorem%20Ipsum">A Link That Doesn't Work</a>
+    <hr / />
 {% endblock %}
 
 {% block body %}
-Welcome to {{ name | title }}!
+    <p>Welcome to {{ name | title }}!</p>
+    {% if pages | length %}
+        <hr />
+        <p>Pages:</p>
+        {% for page in pages %}
+            <a href="/pages?_id={{ page._id }}">{{ page.title }}</a><br>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 

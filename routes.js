@@ -10,15 +10,19 @@ router.use((req,res, next) => {
 
 // Index route 
 router.get('/', (req, res) => {
-    res.render('index', { name: process.env.npm_package_name })
+    pages.Page.find().then(pages => {
+        res.render('index', { name: process.env.npm_package_name, pages: pages })
+    }).catch(err => { console.log(err) })
 })
 
 // Pages routes
 router.get('/pages', pages.renderPage)
+router.get('/pages/new', pages.newPage)
+router.post('/pages', pages.createPage)
 
 // A catch-all redirect to the page-not-found template
 router.all('*', (req, res) => {
-    res.render('page-not-found', { reason: 'Page Not Found!'})
+    res.render('404', { reason: 'Page Not Found!'})
 })
 
 module.exports = router
