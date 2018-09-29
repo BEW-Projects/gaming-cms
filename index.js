@@ -46,7 +46,7 @@ nunjucks.configure('views', {
 app.set('view engine', 'njk')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(express.static('themes'))
+app.use(express.static('./assets/themes'))
 app.use(routes)
 
 // Start our app
