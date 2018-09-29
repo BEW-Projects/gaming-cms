@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "iojs"
+  - "10.11.0"
+services: mongodb
+cache:
+  directories:
+    - "node_modules"

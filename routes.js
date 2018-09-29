@@ -2,12 +2,12 @@ const router = require('express').Router()
 
 // Import controllers
 import pages from './controllers/pages'
-import utils from './controllers/utils'
+import configurations from './controllers/configurations'
 
 // Some middleware we run on all routes eg. storing session as local variable
 router.use((req,res, next) => {
     // set local variable currentTheme to database entry or default if none
-    res.locals.currentTheme = utils.getTheme()
+    res.locals.currentTheme = configurations.getTheme()
     // set local variable name
     res.locals.name = process.env.npm_package_name
     next()

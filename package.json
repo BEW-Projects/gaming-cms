@@ -4,6 +4,7 @@
     "description": "A CMS for game servers made in Node.js",
     "main": "index.js",
     "scripts": {
+        "test": "mocha --require babel-core/register test/**/*_spec.js",
         "start": "babel-watch -w views index.js"
     },
     "author": "",
@@ -19,7 +20,10 @@
     "devDependencies": {
         "babel-core": "^6.26.3",
         "babel-preset-env": "^1.7.0",
-        "babel-watch": "^2.0.7"
+        "babel-watch": "^2.0.7",
+        "chai": "^4.2.0",
+        "chai-http": "^4.2.0",
+        "mocha": "^5.2.0"
     },
     "engine": {
         "node": "10.11.0"
