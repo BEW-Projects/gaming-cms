@@ -1,4 +1,4 @@
-# gaming-cms
+# gaming-cms [![Build Status](https://travis-ci.com/BEW-Projects/gaming-cms.svg?branch=master)](https://travis-ci.com/BEW-Projects/gaming-cms)
 A CMS for game servers made in Node.js
 
 ## Running Locally
