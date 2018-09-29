@@ -53,3 +53,6 @@ app.use(routes)
 app.listen(process.env.PORT || 3000, () => {
     console.log("App is started on port 3000!")
 })
+
+// Export our app so we can use for tests
+module.exports = app

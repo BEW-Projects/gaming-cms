@@ -4,7 +4,7 @@
     "description": "A CMS for game servers made in Node.js",
     "main": "index.js",
     "scripts": {
-        "test": "mocha --require babel-core/register test/**/*_spec.js",
+        "test": "mocha --require babel-core/register --exit test/**/*_spec.js",
         "start": "babel-watch -w views index.js"
     },
     "author": "",

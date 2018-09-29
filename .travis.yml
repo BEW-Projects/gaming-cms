@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "10.11.0"
+  - "latest"
 services: mongodb
 cache:
   directories:
