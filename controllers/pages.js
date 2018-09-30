@@ -1,24 +1,24 @@
 import Page from '../models/page'
+import mongoose from 'mongoose'
 
-exports.renderPage = (req, res) => {
-    
-    // If no id is specified, page not found
+exports.renderPage = (req, res) => {    
+    // If no id is specified show list of pages
     if(!req.query._id) {
-        res.render('404', { reason: 'Page Not Found!' })
-        return
-    }
-    
-    Page.findById(req.query._id).then(page => {
-        
-        // If id not found in db, page not found
-        if(!page) {
-            res.render('404', { reason: 'Page Not Found!' })
-            return
-        }
-        
-        res.render('pages', { title: page.title, content: page.content })
-
-    }).catch(err => { console.log(err) })
+        Page.find().then(pages => {
+            res.render('pages', { pages: pages })
+        }).catch(err => { console.log(err) })
+    } else if (req.query._id && !mongoose.Types.ObjectId.isValid(req.query._id)) {
+        res.status(404).render('404', { reason: 'Page Not Found!' })
+    } else {
+        Page.findById(req.query._id).then(page => {
+            // If id not found in db, page not found
+            if(!page) {
+                res.status(404).render('404', { reason: 'Page Not Found!' })
+            } else {
+                res.render('pages-show', { title: page.title, content: page.content })
+            }
+        }).catch(err => { console.log(err) })
+    }    
 }
 
 exports.newPage = (req, res) => {

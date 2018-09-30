@@ -1,0 +1,10 @@
+{% extends "index.njk" %}
+
+{% block body %}
+    {% block title %}
+        <p><u>{{ title }}</u></p>
+    {% endblock %}
+    {% block content %}
+        {{ content | safe }}
+    {% endblock %}
+{% endblock %}

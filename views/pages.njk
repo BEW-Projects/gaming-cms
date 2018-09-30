@@ -1,10 +1,12 @@
 {% extends "index.njk" %}
 
 {% block body %}
-    {% block title %}
-        <p><u>{{ title }}</u></p>
-    {% endblock %}
-    {% block content %}
-        {{ content | safe }}
-    {% endblock %}
+    {% if pages | length %}
+        <p>Pages:</p>
+        {% for page in pages %}
+            <a href="/pages?_id={{ page._id }}">{{ page.title }}</a><br>
+        {% endfor %}
+        {% else %}
+            <p>No pages yet! <a href="/pages/new">Create One</a></p>    
+    {% endif %}
 {% endblock %}

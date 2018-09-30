@@ -15,9 +15,7 @@ router.use((req,res, next) => {
 
 // Index route 
 router.get('/', (req, res) => {
-    pages.Page.find().then(pages => {
-        res.render('index', { pages: pages })
-    }).catch(err => { console.log(err) })
+    res.render('index')
 })
 
 // Pages routes
@@ -27,7 +25,7 @@ router.post('/pages', pages.createPage)
 
 // A catch-all redirect to the 404 template
 router.all('*', (req, res) => {
-    res.render('404', { reason: 'Page Not Found!'})
+    res.status(404).render('404', { reason: 'Page Not Found!'})
 })
 
 module.exports = router
