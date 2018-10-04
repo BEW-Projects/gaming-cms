@@ -1,0 +1,12 @@
+{% extends "index.njk" %}
+
+{% block body %}
+    {% if articles | length %}
+        <p>Articles:</p>
+        {% for article in articles %}
+            <a href="/articles?_id={{ page._id }}">{{ article.title }}</a><br>
+        {% endfor %}
+        {% else %}
+            <p>No articles yet! <a href="/articles/new/test">Create One</a></p>
+    {% endif %}
+{% endblock %}

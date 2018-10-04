@@ -3,6 +3,7 @@ const router = require('express').Router()
 // Import controllers
 import pages from './controllers/pages'
 import configurations from './controllers/configurations'
+import articles from './controllers/articles'
 
 // Some middleware we run on all routes eg. storing session as local variable
 router.use((req,res, next) => {
@@ -13,16 +14,19 @@ router.use((req,res, next) => {
     next()
 })
 
-// Index route 
+// Index route
 router.get('/', (req, res) => {
     res.render('index')
 })
 
-// Pages routes
+// Pages Routes
 router.get('/pages', pages.renderPage)
 router.get('/pages/new', pages.newPage)
 router.post('/pages', pages.createPage)
 
+// Articles Routes
+router.get('/articles/new/test', articles.createArticleRoute)
+router.get('/articles', articles.getArticlesRoute)
 // A catch-all redirect to the 404 template
 router.all('*', (req, res) => {
     res.status(404).render('404', { reason: 'Page Not Found!'})

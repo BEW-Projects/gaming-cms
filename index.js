@@ -1,4 +1,5 @@
 // Module imports
+import 'babel-polyfill'
 import express from 'express'
 import nunjucks from 'nunjucks'
 import mongoose from 'mongoose'
@@ -25,7 +26,7 @@ db.once('open', () => {
             maxAge: 1800000 // 30 minutes (milliseconds)
         },
         store: new MongoStore({
-            mongooseConnection: db 
+            mongooseConnection: db
         })
     }))
 })
