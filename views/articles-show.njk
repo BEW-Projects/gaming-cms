@@ -1,0 +1,10 @@
+{% extends "index.njk" %}
+
+{% block body %}
+    {% block title %}
+        <p><u>{{ article.title }}</u></p>
+    {% endblock %}
+    {% block content %}
+        {{ article.content }}
+    {% endblock %}
+{% endblock %}

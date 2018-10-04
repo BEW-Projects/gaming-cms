@@ -2,11 +2,11 @@
 
 {% block body %}
     {% if articles | length %}
-        <p>Articles:</p>
+        <p>Articles: <a href="/articles/new">New</a></p></p>
         {% for article in articles %}
-            <a href="/articles?_id={{ page._id }}">{{ article.title }}</a><br>
+            <a href="/articles?_id={{ article._id }}">{{ article.title }}</a><br>
         {% endfor %}
         {% else %}
-            <p>No articles yet! <a href="/articles/new/test">Create One</a></p>
+            <p>No articles yet! <a href="/articles/new">Create One</a></p>
     {% endif %}
 {% endblock %}

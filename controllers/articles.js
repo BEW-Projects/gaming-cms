@@ -1,46 +1,86 @@
 import Article from '../models/article'
-import mongoose from 'mongoose'
 
+// createArticleRoute
 exports.createArticleRoute = (req, res) => {
-    let testArticle = {
-        title: "articletest",
-        content: "hello world",
-        authorId: mongoose.Types.ObjectId(),
-        created: new Date,
-        lastModified: new Date,
-        tags: [mongoose.Types.ObjectId(), mongoose.Types.ObjectId()]
-    }
-    if(testArticle) {
-        exports.createArticle(testArticle).then(article => {
-            res.render('articles', { article: article })
-        })
-
-    }
+    exports.createArticle(req.body).then(article => {
+        if (req.header('Content-Type') == 'application/json') {
+            res.send({
+                article: article
+            })
+        } else {
+            res.redirect(`/articles?_id=${article._id}`)
+        }
+    })
 }
 
+// getArticlesRoute
 exports.getArticlesRoute = (req, res) => {
-    if(req.query) {
-        exports.getArticles(req.query).then(articles => {
-            res.render('articles', { articles: articles })
-        })
-    }
+    exports.getArticles(req.query).then(articles => {
+        if (req.header('Content-Type') == 'application/json') {
+            res.send({
+                articles: articles
+            })
+        } else {
+            if (articles.length > 1 || Object.keys(req.query).length == 0) {
+                res.render('articles', {
+                    articles: articles
+                })
+            } else {
+                res.render('articles-show', {
+                    article: articles[0]
+                })
+            }
+        }
+    })
+}
+
+// updateArticlesRoute
+exports.updateArticlesRoute = (req, res) => {
+    exports.updateArticles(req.query, req.body).then(articles => {
+        if (req.header('Content-Type') == 'application/json') {
+            res.send({
+                articles: articles
+            })
+        } else {
+            if (articles.length > 1) {
+                res.render('articles', {
+                    articles: articles
+                })
+            } else {
+                res.render('articles-show', {
+                    article: articles[0]
+                })
+            }
+        }
+    })
+}
+
+// deleteArticlesRoute
+exports.deleteArticlesRoute = (req, res) => {
+    exports.deleteArticles(req.query).then(articles => {
+        if (req.header('Content-Type') == 'application/json') {
+            res.send({
+                articles: articles
+            })
+        } else {
+            if (articles.length > 1) {
+                res.render('articles', {
+                    articles: articles
+                })
+            } else {
+                res.render('articles-show', {
+                    article: articles[0]
+                })
+            }
+        }
+    })
 }
 
 // creates article and returns new article object
 exports.createArticle = async function createArticle(data) {
-    try{
+    try {
         return await Article.create(data)
-    } catch(err) {
-        console.error(err.message)
-        return
-    }
-}
-
-// returns single article by _id
-exports.getArticle = async function getArticle(id) {
-    try{
-        return await Article.findById(id)
-    } catch(err) {
+    } catch (err) {
         console.error(err.message)
         return
     }
@@ -48,29 +88,19 @@ exports.getArticle = async function getArticle(id) {
 
 // returns array of articles that match req.query
 exports.getArticles = async function getArticles(query) {
-    try{
+    try {
         return await Article.find(query)
-    } catch(err) {
+    } catch (err) {
         console.error(err.message)
         return
     }
 }
 
-// updates article and returns updated article
-exports.updateArticle = async function updateArticle(id, updatedData) {
-    try{
-        return await Article.findByIdAndUpdate(id, updatedData)
-    } catch(err) {
-        console.error(err.message)
-        return
-    }
-}
-
-// delete article by _id and return deleted article
-exports.deleteArticle = async function deleteArticle(id) {
-    try{
-        return await Article.findByIdAndRemove(id)
-    } catch(err) {
+// updates articles and returns updated articles
+exports.updateArticles = async function updateArticles(query, updatedData) {
+    try {
+        return await Article.updateMany(query, updatedData)
+    } catch (err) {
         console.error(err.message)
         return
     }
@@ -78,9 +108,9 @@ exports.deleteArticle = async function deleteArticle(id) {
 
 // delete articles matching req.query and return array of articles deleted
 exports.deleteArticles = async function deleteArticles(query) {
-    try{
+    try {
         return await Article.deleteMany(query)
-    } catch(err) {
+    } catch (err) {
         console.error(err.message)
         return
     }

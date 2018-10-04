@@ -25,8 +25,15 @@ router.get('/pages/new', pages.newPage)
 router.post('/pages', pages.createPage)
 
 // Articles Routes
-router.get('/articles/new/test', articles.createArticleRoute)
-router.get('/articles', articles.getArticlesRoute)
+router.route('/articles')
+    .get(articles.getArticlesRoute)
+    .post(articles.createArticleRoute)
+    .put(articles.updateArticlesRoute)
+    .delete(articles.deleteArticlesRoute)
+router.get('/articles/new', (req, res) => {
+    res.render('articles-new')
+})
+
 // A catch-all redirect to the 404 template
 router.all('*', (req, res) => {
     res.status(404).render('404', { reason: 'Page Not Found!'})
