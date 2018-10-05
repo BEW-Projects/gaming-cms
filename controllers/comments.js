@@ -1,7 +1,7 @@
 import Comment from '../models/comment'
 
 // creates comment and returns new comment
-exports.createComment = async function createComment(data) {
+exports.createOne = async (data) => {
     try {
         return await Comment.create(data)
     } catch (err) {
@@ -10,7 +10,7 @@ exports.createComment = async function createComment(data) {
 }
 
 // returns single comment by _id
-exports.getComment = async function getComment(id) {
+exports.getOne = async (id) => {
     try {
         return await Comment.findById(id)
     } catch (err) {
@@ -19,7 +19,7 @@ exports.getComment = async function getComment(id) {
 }
 
 // returns array of comments that match query
-exports.getComments = async function getComments(query) {
+exports.getMany = async (query) => {
     try {
         return await Comment.find(query)
     } catch (err) {
@@ -28,7 +28,7 @@ exports.getComments = async function getComments(query) {
 }
 
 // updates comment by _id and returns updated comment
-exports.updateComment = async function updateComment(id, updatedData) {
+exports.updateOne = async (id, updatedData) => {
     try {
         return await Comment.findByIdAndUpdate(id, updatedData)
     } catch (err) {
@@ -37,7 +37,7 @@ exports.updateComment = async function updateComment(id, updatedData) {
 }
 
 // updates comments that match query and returns query result
-exports.updateComments = async function updateComments(query, updatedData) {
+exports.updateMany = async (query, updatedData) => {
     try {
         return await Comment.updateMany(query, updatedData)
     } catch (err) {
@@ -46,7 +46,7 @@ exports.updateComments = async function updateComments(query, updatedData) {
 }
 
 // delete comment by _id and returns deleted comment
-exports.deleteComment = async function deleteComment(id) {
+exports.deleteOne = async (id) => {
     try {
         return await Comment.findByIdAndRemove(id)
     } catch (err) {
@@ -55,7 +55,7 @@ exports.deleteComment = async function deleteComment(id) {
 }
 
 // deletes comments that match query and returns query result
-exports.deleteComments = async function deleteComments(query) {
+exports.deleteMany = async (query) => {
     try {
         return await Comment.deleteMany(query)
     } catch (err) {

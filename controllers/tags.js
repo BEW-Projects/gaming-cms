@@ -1,7 +1,7 @@
 import Tag from '../models/tag'
 
 // creates tag and returns new tag object
-exports.createTag = async function createTag(data) {
+exports.createOne = async (data) => {
     try {
         return await Tag.create(data)
     } catch (err) {
@@ -10,7 +10,7 @@ exports.createTag = async function createTag(data) {
 }
 
 // returns single tag by _id
-exports.getTag = async function getTag(id) {
+exports.getOne = async (id) => {
     try {
         return await Tag.findById(id)
     } catch (err) {
@@ -19,7 +19,7 @@ exports.getTag = async function getTag(id) {
 }
 
 // returns array of tags that match query
-exports.getTags = async function getTags(query) {
+exports.getMany = async (query) => {
     try {
         return await Tag.find(query)
     } catch (err) {
@@ -28,7 +28,7 @@ exports.getTags = async function getTags(query) {
 }
 
 // updates tag by id and returns updated tag
-exports.updateTag = async function updateTag(id, updatedData) {
+exports.updateOne = async (id, updatedData) => {
     try {
         return await Tag.findByIdAndUpdate(id, updatedData)
     } catch (err) {
@@ -37,7 +37,7 @@ exports.updateTag = async function updateTag(id, updatedData) {
 }
 
 // updates tags that match query and returns query results
-exports.updateTags = async function updateTags(query, updatedData) {
+exports.updateMany = async (query, updatedData) => {
     try {
         return await Tag.updateMany(query, updatedData)
     } catch (err) {
@@ -46,7 +46,7 @@ exports.updateTags = async function updateTags(query, updatedData) {
 }
 
 // delete tag by _id and return deleted tag
-exports.deleteTag = async function deleteTag(id) {
+exports.deleteOne = async (id) => {
     try {
         return await Tag.findByIdAndRemove(id)
     } catch (err) {
@@ -55,7 +55,7 @@ exports.deleteTag = async function deleteTag(id) {
 }
 
 // delete tags that match query and return query results
-exports.deleteTags = async funciton deleteTags(query) {
+exports.deleteMany = async (query) => {
     try {
         return await Tag.deleteMany(query)
     } catch (err) {

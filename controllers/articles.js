@@ -77,42 +77,65 @@ exports.deleteArticlesRoute = (req, res) => {
 }
 
 // creates article and returns new article object
-exports.createArticle = async function createArticle(data) {
+exports.createOne = async (data) => {
     try {
         return await Article.create(data)
     } catch (err) {
-        console.error(err.message)
-        return
+        return console.error(err.message)
     }
 }
 
-// returns array of articles that match req.query
-exports.getArticles = async function getArticles(query) {
+// returns article by _id
+exports.getOne = async (id) => {
+    try {
+        return await Article.findById(id)
+    } catch (err) {
+        return console.error(err.message)
+    }
+}
+
+// returns array of articles that match query
+exports.getMany = async (query) => {
     try {
         return await Article.find(query)
     } catch (err) {
-        console.error(err.message)
-        return
+        return console.error(err.message)
     }
 }
 
-// updates articles and returns updated articles
-exports.updateArticles = async function updateArticles(query, updatedData) {
+// update article by _id and return updated article
+exports.updateOne = async (id, updatedData) => {
+    try {
+        return await Article.findByIdAndUpdate(id, updatedData)
+    } catch (err) {
+        return console.error(err.message)
+    }
+}
+
+// updates articles matching query and returns query results
+exports.updateMany = async (query, updatedData) => {
     try {
         return await Article.updateMany(query, updatedData)
     } catch (err) {
-        console.error(err.message)
-        return
+        return console.error(err.message)
     }
 }
 
-// delete articles matching req.query and return array of articles deleted
-exports.deleteArticles = async function deleteArticles(query) {
+// delete article by _id and return deleted article
+exports.deleteOne = async (id) => {
+    try {
+        return await Article.findByIdAndRemove(id)
+    } catch (err) {
+        return console.error(err.message)
+    }
+}
+
+// delete articles matching query and return query results
+exports.deleteMany = async (query) => {
     try {
         return await Article.deleteMany(query)
     } catch (err) {
-        console.error(err.message)
-        return
+        return console.error(err.message)
     }
 }
 
