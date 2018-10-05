@@ -36,6 +36,9 @@ MemberSchema.statics.authenticate = async (email, password) => {
         // find our member by email
         let member = await this.findOne( { email: email })
         if (!member) return { reason: "Email not found. Maybe you mistyped something?"}
+        // TODO: length should return current time - status expire date
+        // TODO: if account status is banned and status has expired, change status to active and continue
+        if(member.accountStatus == "banned") return { reason: member.statusReason, length: member.statusExpire}
         let passwordsMatch = await bcrypt.compare(password, member.password)
         if (!passwordsMatch) {
             return { member: member }
