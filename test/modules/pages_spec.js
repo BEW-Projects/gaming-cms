@@ -5,24 +5,25 @@ import Page from '../../models/page'
 const should = chai.should()
 
 // Test new page object
-const testPage = {
+const testPage = new Page({
     'title': 'TestPageChai',
     'content': '<p>This is a test <u>page</u></p>'
-}
+})
+console.log(testPage)
 
 // Chai setup
 chai.use(chaiHttp)
 
 // Run our tests
 describe('Pages', () => {
-    
+
     // Dispose of our test page after testing
     after(() => {
         Page.deleteMany({ title: 'TestPageChai' }, (err) => {
             console.log(err)
         })
     })
-    
+
     it('get /pages/new should render pages-new', (done) => {
         chai.request(server)
             .get('/pages/new')
@@ -32,7 +33,7 @@ describe('Pages', () => {
                 done()
             })
     })
-    
+
     it('post /pages should create new page then render pages-show for new page', (done) => {
         chai.request(server)
             .post('/pages')
@@ -47,7 +48,7 @@ describe('Pages', () => {
                     })
             })
     })
-    
+
     it('get /pages should render pages with list of pages', (done) => {
         chai.request(server)
             .get('/pages')
@@ -57,7 +58,7 @@ describe('Pages', () => {
                 done()
             })
     })
-    
+
     it('get /pages/$_id should render 404 if id is not found or if _id is not a valid ObjectId', (done) => {
         chai.request(server)
             .get('/pages?_id=null')
