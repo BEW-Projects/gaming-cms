@@ -5,11 +5,10 @@ import Page from '../../models/page'
 const should = chai.should()
 
 // Test new page object
-const testPage = new Page({
-    'title': 'TestPageChai',
-    'content': '<p>This is a test <u>page</u></p>'
-})
-console.log(testPage)
+const testPage = {
+    "title": "TestPageChai",
+    "content": "<p>This is a test <u>page</u></p>"
+}
 
 // Chai setup
 chai.use(chaiHttp)
