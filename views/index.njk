@@ -10,12 +10,15 @@
 </head>
 <body>
     {% block header %}
-        <a href="/">Home</a> | <a href="/pages/new">New Page</a> | <a href="/pages">Pages</a> | <a href="/articles">Articles</a> | <a href="#" onclick="event.preventDefault();clickMe();">Javascript Test</a> <br>
-        <hr />
+        {% include "./partials/nav.njk" %}
     {% endblock %}
 
     {% block body %}
-        <p>Welcome to {{ name | title }}!</p>
+        {% include "./modules/app/index.njk" %}
+    {% endblock %}
+
+    {% block footer %}
+        {% include "./partials/footer.njk" %}
     {% endblock %}
 
     <script src="{{ currentTheme }}/main.js"></script>

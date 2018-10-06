@@ -36,7 +36,7 @@ router.get('/articles/new', (req, res) => {
 
 // A catch-all redirect to the 404 template
 router.all('*', (req, res) => {
-    res.status(404).render('404', { reason: 'Page Not Found!'})
+    res.status(404).render('modules/app/404', { reason: 'Page Not Found!'})
 })
 
 module.exports = router

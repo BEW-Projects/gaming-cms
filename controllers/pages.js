@@ -1,11 +1,11 @@
 import Page from '../models/page'
 import mongoose from 'mongoose'
 
-exports.renderPage = (req, res) => {    
+exports.renderPage = (req, res) => {
     // If no id is specified show list of pages
     if(!req.query._id) {
         Page.find().then(pages => {
-            res.render('pages', { pages: pages })
+            res.render('modules/pages/pages', { pages: pages })
         }).catch(err => { console.log(err) })
     } else if (req.query._id && !mongoose.Types.ObjectId.isValid(req.query._id)) {
         res.status(404).render('404', { reason: 'Page Not Found!' })
@@ -15,14 +15,14 @@ exports.renderPage = (req, res) => {
             if(!page) {
                 res.status(404).render('404', { reason: 'Page Not Found!' })
             } else {
-                res.render('pages-show', { title: page.title, content: page.content })
+                res.render('modules/pages/pages-show', { title: page.title, content: page.content })
             }
         }).catch(err => { console.log(err) })
-    }    
+    }
 }
 
 exports.newPage = (req, res) => {
-    res.render('pages-new')
+    res.render('modules/pages/pages-new')
 }
 
 exports.createPage = (req, res) => {

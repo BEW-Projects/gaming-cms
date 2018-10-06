@@ -2,7 +2,7 @@ import Article from '../models/article'
 
 // createArticleRoute
 exports.createArticleRoute = (req, res) => {
-    exports.createArticle(req.body).then(article => {
+    exports.createOne(req.body).then(article => {
         if (req.header('Content-Type') == 'application/json') {
             res.send({
                 article: article
@@ -15,18 +15,18 @@ exports.createArticleRoute = (req, res) => {
 
 // getArticlesRoute
 exports.getArticlesRoute = (req, res) => {
-    exports.getArticles(req.query).then(articles => {
+    exports.getMany(req.query).then(articles => {
         if (req.header('Content-Type') == 'application/json') {
             res.send({
                 articles: articles
             })
         } else {
             if (articles.length > 1 || Object.keys(req.query).length == 0) {
-                res.render('articles', {
+                res.render('modules/articles/articles', {
                     articles: articles
                 })
             } else {
-                res.render('articles-show', {
+                res.render('modules/articles/articles-show', {
                     article: articles[0]
                 })
             }
@@ -36,18 +36,18 @@ exports.getArticlesRoute = (req, res) => {
 
 // updateArticlesRoute
 exports.updateArticlesRoute = (req, res) => {
-    exports.updateArticles(req.query, req.body).then(articles => {
+    exports.updateMany(req.query, req.body).then(articles => {
         if (req.header('Content-Type') == 'application/json') {
             res.send({
                 articles: articles
             })
         } else {
             if (articles.length > 1) {
-                res.render('articles', {
+                res.render('modules/articles/articles', {
                     articles: articles
                 })
             } else {
-                res.render('articles-show', {
+                res.render('modules/articles/articles-show', {
                     article: articles[0]
                 })
             }
@@ -57,18 +57,18 @@ exports.updateArticlesRoute = (req, res) => {
 
 // deleteArticlesRoute
 exports.deleteArticlesRoute = (req, res) => {
-    exports.deleteArticles(req.query).then(articles => {
+    exports.deleteMany(req.query).then(articles => {
         if (req.header('Content-Type') == 'application/json') {
             res.send({
                 articles: articles
             })
         } else {
             if (articles.length > 1) {
-                res.render('articles', {
+                res.render('modules/articles/articles', {
                     articles: articles
                 })
             } else {
-                res.render('articles-show', {
+                res.render('modules/articles/articles-show', {
                     article: articles[0]
                 })
             }
