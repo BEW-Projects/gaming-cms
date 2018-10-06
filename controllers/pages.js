@@ -8,12 +8,12 @@ exports.renderPage = (req, res) => {
             res.render('modules/pages/pages', { pages: pages })
         }).catch(err => { console.log(err) })
     } else if (req.query._id && !mongoose.Types.ObjectId.isValid(req.query._id)) {
-        res.status(404).render('404', { reason: 'Page Not Found!' })
+        res.status(404).render('modules/app/404', { reason: 'Page Not Found!' })
     } else {
         Page.findById(req.query._id).then(page => {
             // If id not found in db, page not found
             if(!page) {
-                res.status(404).render('404', { reason: 'Page Not Found!' })
+                res.status(404).render('modules/app/404', { reason: 'Page Not Found!' })
             } else {
                 res.render('modules/pages/pages-show', { title: page.title, content: page.content })
             }

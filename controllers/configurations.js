@@ -1,12 +1,16 @@
 import Configuration from '../models/configuration'
 
+// default configurations
+const defaultConfigurations = {
+    'currentTheme': 'default',
+    'siteName': 'My Site'
+}
 // initializes configuration if none exists
-exports.initialize = async () => {
+const initialize = async () => {
     try {
-        await exports.createOne('currentTheme', 'default')
-        await exports.createOne('siteName', 'My Site')
-        return await exports.get()
-
+        for (var config in defaultConfigurations) {
+            await exports.createOne(config, defaultConfigurations[config])
+        }
     } catch (err) {
         return console.error(err.message)
     }
@@ -29,7 +33,7 @@ exports.createOne = async (name, value) => {
 }
 
 // returns value for configuration by name
-exports.getValue = async (name) => {
+const getValue = async (name) => {
     try {
         let config = await Configuration.find({ name: name }).limit(1)
         return config[0].value
@@ -38,10 +42,12 @@ exports.getValue = async (name) => {
     }
 }
 
-// returns all configurations as a collection
+// returns all configurations as a collection, initialize config if empty
 exports.get = async () => {
     try {
         let configs = await Configuration.find({})
+        if (configs.length < Object.keys(defaultConfigurations).length) await initialize()
+        configs = await Configuration.find({})
         return configs.reduce((acc, cur) => ({...acc, [cur.name]: cur.value}), {})
     } catch (err) {
         return console.error(err.message)

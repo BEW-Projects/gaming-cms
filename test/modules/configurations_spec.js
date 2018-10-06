@@ -9,8 +9,10 @@ chai.use(chaiHttp)
 
 // Run our tests
 describe('Configurations', () => {
-    it('getTheme() should return a string', (done) => {
-        Configurations.getTheme().should.be.a('string')
-        done()
+    it('getValue(\'currentTheme\') should return a string', (done) => {
+        Configurations.get().then(configs => {
+            configs['currentTheme'].should.be.a('string')
+            done()
+        })
     })
 })

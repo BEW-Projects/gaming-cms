@@ -7,7 +7,7 @@ import articles from './controllers/articles'
 
 // Some middleware we run on all routes eg. storing session as local variable
 router.use((req,res, next) => {
-    configurations.initialize().then(configs => {
+    configurations.get().then(configs => {
         res.locals.currentTheme = configs['currentTheme']
         res.locals.name = configs['siteName']
         next()
