@@ -31,7 +31,7 @@ router.route('/articles')
     .put(articles.updateArticlesRoute)
     .delete(articles.deleteArticlesRoute)
 router.get('/articles/new', (req, res) => {
-    res.render('articles-new')
+    res.render('modules/articles/articles-new')
 })
 
 // A catch-all redirect to the 404 template

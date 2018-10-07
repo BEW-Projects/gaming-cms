@@ -40,7 +40,7 @@ MemberSchema.statics.authenticate = async (email, password) => {
         // TODO: if account status is banned and status has expired, change status to active and continue
         if(member.accountStatus == "banned") return { reason: member.statusReason, length: member.statusExpire}
         let passwordsMatch = await bcrypt.compare(password, member.password)
-        if (!passwordsMatch) {
+        if (passwordsMatch) {
             return { member: member }
         } else {
             return { reason: "Invalid Password. Please try again!"}
