@@ -39,6 +39,7 @@ router.get('/articles/new', (req, res) => {
 router.get('/members/new', members.new)
 router.post('/members', members.create)
 router.post('/members/logout', members.logout)
+router.post('/members/login', members.login)
 
 // A catch-all redirect to the 404 template
 router.all('*', (req, res) => {

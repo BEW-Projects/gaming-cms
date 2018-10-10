@@ -8,7 +8,12 @@ exports.create = (req, res) => {
                 reasons: member.reasons
             })
         } else {
-            req.session.memberId = member._id
+            req.session.member = {}
+            req.session.member.memberId = member._id
+            req.session.member.role = member.role
+            exports.setStatus(member._id, 'Available').then((status) => {
+                req.session.member.status = status
+            })
             res.status(200).send()
         }
     }).catch((err) => {
@@ -26,6 +31,36 @@ exports.logout = (req, res) => {
     res.status(200).send()
 }
 
+exports.login = (req, res) => {
+    Member.authenticate(req.body.email, req.body.password).then((member) => {
+        if(member.reason) {
+            res.status(200).send({
+                reason: member.reason
+            })
+        } else {
+            req.session.member = {}
+            req.session.member.memberId = member._id
+            req.session.member.role = member.role
+            exports.setStatus(member._id, 'Available').then((status) => {
+                req.session.member.status = status
+            })
+            res.status(200).send()
+        }
+    })
+}
+
+// Sets member status and current datetime
+exports.setStatus = async function(id, status) {
+    try {
+        await Member.updateOne({ _id: id }, {
+            status: status,
+            lastStatus: new Date()
+        })
+        return status
+    } catch (err) {
+        return console.error(err.message)
+    }
+}
 // find one member by query and return that member
 exports.getOne = async (query) => {
     try {

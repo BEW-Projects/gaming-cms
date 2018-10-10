@@ -45,13 +45,23 @@ nunjucks.configure('views', {
 app.set('view engine', 'njk')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(express.static('./assets/themes'))
+app.use(express.static('./assets'))
 app.use(routes)
 
 // Start our app
-app.listen(process.env.PORT || 3000, () => {
+let server = app.listen(process.env.PORT || 3000, () => {
     console.log("App is started on port 3000!")
 })
+
+ // Socket.io
+ const io = require('socket.io')(server)
+
+ io.on('connection', (socket) => {
+     console.log('New user connected')
+     socket.on('disconnect', function(){
+        console.log('user disconnected');
+      })
+ })
 
 // Export our app so we can use for tests
 module.exports = app
