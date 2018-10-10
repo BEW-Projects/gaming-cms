@@ -4,6 +4,7 @@ const router = require('express').Router()
 import pages from './controllers/pages'
 import configurations from './controllers/configurations'
 import articles from './controllers/articles'
+import members from './controllers/members'
 
 // Some middleware we run on all routes eg. storing session as local variable
 router.use((req,res, next) => {
@@ -33,6 +34,11 @@ router.route('/articles')
 router.get('/articles/new', (req, res) => {
     res.render('modules/articles/articles-new')
 })
+
+// Members routes
+router.get('/members/new', members.new)
+router.post('/members', members.create)
+router.post('/members/logout', members.logout)
 
 // A catch-all redirect to the 404 template
 router.all('*', (req, res) => {
