@@ -23,7 +23,7 @@ exports.get = (req, res) => {
 
         // make sure our query term is a valid object id
         if(!/^[0-9a-fA-F]{24}$/.test(req.query._id)) {
-            return res.render('modules/app/404', { reason: 'Invalid Article Id or query term!' })
+            return res.status(404).render('modules/app/404', { reason: 'Invalid Article Id or query term!' })
         }
 
         Article.find({ _id: req.query._id }).limit(1).then((articles) => {
