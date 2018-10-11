@@ -11,6 +11,7 @@ exports.create = (req, res) => {
             req.session.member = {}
             req.session.member.memberId = member._id
             req.session.member.role = member.role
+            req.session.member.screenName = member.screenName
             exports.setStatus(member._id, 'Available').then((status) => {
                 req.session.member.status = status
             })
@@ -41,6 +42,7 @@ exports.login = (req, res) => {
             req.session.member = {}
             req.session.member.memberId = member._id
             req.session.member.role = member.role
+            req.session.member.screenName = member.screenName
             exports.setStatus(member._id, 'Available').then((status) => {
                 req.session.member.status = status
             })

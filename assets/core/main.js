@@ -1,7 +1,26 @@
-var connect = () => {
-    var socket = io.connect('http://localhost:3000')
+var socket = io()
+
+socket.on('message', function(data) {
+    $('#chat-toggle-btn').css("border-style", "solid")
+    $('#chat-toggle-btn').css("border-color", "white")
+    setTimeout(function() {
+        $('#chat-toggle-btn').css("border-style", "none")
+    }, 1000)
+    let row = $("<tr />").appendTo('#chat-messages')
+    $("<td />", { text: data.screenName }).appendTo(row)
+    $("<td />", { text: data.message }).appendTo(row)
+    document.getElementById('chat-messages').scrollTop = 10000
+})
+
+function startChat() {
+    socket = io()
 }
-connect()
+
+function sendChatMessage() {
+    let message = $('#chat-typed-message').val()
+    socket.emit('message', message)
+    $('#chat-typed-message').val('')
+}
 $('html').click(function() {
     $('#chat-box').hide()
 })
@@ -12,6 +31,14 @@ $('#chat-box').click(function(event) {
 
 $('#chat-toggle-btn').click(function(event) {
     event.stopPropagation()
+    axios.get('/chats').then((res) => {
+        for (var i = 0; i < res.data.length; i++) {
+            let row = $("<tr />").appendTo('#chat-messages')
+            $("<td />", { text: res.data[i].screenName }).appendTo(row)
+            $("<td />", { text: res.data[i].message }).appendTo(row)
+        }
+        document.getElementById('chat-messages').scrollTop = 10000
+    })
     $('#chat-box').toggle()
 })
 

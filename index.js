@@ -5,11 +5,13 @@ import nunjucks from 'nunjucks'
 import mongoose from 'mongoose'
 import session from 'express-session'
 import bodyParser from 'body-parser'
+import chat from './models/chat'
 const MongoStore = require('connect-mongo')(session)
 const app = express()
 
 // Custom imports and variables
 import routes from './routes'
+
 
 // Connect to our database and set up our sessions
 mongoose.connect(process.env.MONGODB || `mongodb://localhost/${process.env.npm_package_name}`, {
@@ -29,12 +31,6 @@ app.use(session({
     })
 }))
 
-// Save our session as a local variable for each client accessible by the templates
-app.use((req, res, next) => {
-    res.locals.session = req.session
-    next()
-})
-
 // Configure nunjucks
 nunjucks.configure('views', {
     autoescape: true,
@@ -46,7 +42,7 @@ app.set('view engine', 'njk')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static('./assets'))
-app.use(routes)
+app.use(routes.router)
 
 // Start our app
 let server = app.listen(process.env.PORT || 3000, () => {
@@ -57,10 +53,19 @@ let server = app.listen(process.env.PORT || 3000, () => {
  const io = require('socket.io')(server)
 
  io.on('connection', (socket) => {
-     console.log('New user connected')
      socket.on('disconnect', function(){
-        console.log('user disconnected');
-      })
+
+     })
+
+     socket.on('message', function(msg) {
+        chat.create({
+                 message: msg,
+                 screenName: routes.screenName
+             }).then((chat) => {
+                 io.emit('message', chat)
+             })
+
+     })
  })
 
 // Export our app so we can use for tests

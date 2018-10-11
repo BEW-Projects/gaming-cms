@@ -5,12 +5,18 @@
 </div>
 <div id="chat-box">
     <div id="chat-text-box">
-            <span class="chat-text">test text</span>
+        <table class="table table-borderless">
+            <tbody id="chat-messages">
+
+            </tbody>
+        </table>
     </div>
+    <form onsubmit="event.preventDefault();sendChatMessage();">
     <div id="chat-input-group" class="input-group">
-            <input type="text" name="text" value="" class="pr-auto">
+        <input id="chat-typed-message" type="text" name="text" value="" autocomplete="off">
             <div class="input-group-append">
-                <button class="btn btn-primary btn-sm" type="button" name="button">Send</button>
+                <button class="btn btn-primary btn-sm" type="submit">Send</button>
             </div>
+        </form>
     </div>
 </div>
