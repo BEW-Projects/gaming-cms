@@ -5,7 +5,7 @@ A CMS for game servers made in Node.js
 Make sure you have [Node.js](http://nodejs.org/) >= 10.11.0 and MongoDB installed.
 
 ```sh
-git clone https://github.com/edwintcloud/gaming-cms.git
+git clone https://github.com/BEW-Projects/gaming-cms.git
 cd gaming-cms
 npm install
 npm start  #needed for babel compiler to work
