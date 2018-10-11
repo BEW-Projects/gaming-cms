@@ -27,11 +27,13 @@ exports.new = (req, res) => {
     res.render('modules/members/members-new', { ip: req.ip })
 }
 
+// logout member by destroying session
 exports.logout = (req, res) => {
     req.session.destroy()
     res.status(200).send()
 }
 
+// log member in and set session
 exports.login = (req, res) => {
     Member.authenticate(req.body.email, req.body.password).then((member) => {
         if(member.reason) {
@@ -63,14 +65,3 @@ exports.setStatus = async function(id, status) {
         return console.error(err.message)
     }
 }
-// find one member by query and return that member
-exports.getOne = async (query) => {
-    try {
-        return
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// Export our model to be used by the router if needed
-exports.Member = Member

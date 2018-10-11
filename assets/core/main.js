@@ -1,5 +1,36 @@
+//========== CONTROLLER FUNCTIONS ==========
+
+// sends post request to server to create
+function controllerCreate(controller) {
+    const formData = getFormData(`${controller}-new-form`)
+    axios.post(`/${controller}`, formData).then((res) => {
+        window.location.href = `/${controller}?_id=${res.data._id}`
+    }).catch((error) => {
+        console.error(error.message)
+    })
+}
+//^^^^^^^^^^ CONTROLLER FUNCTIONS ^^^^^^^^^^
+
+//========== HELPER FUCTIONS ==========
+
+// formData helper function to return form data as a json object from form id
+function getFormData(id) {
+    const formElements = document.getElementById(id).elements;
+    let result = {};
+    for (var i = 0; i < formElements.length; i++) {
+        if (formElements[i].type != "submit") //we dont want to include the submit-buttom
+            result[formElements[i].name] = formElements[i].value;
+    }
+    return result
+}
+//^^^^^^^^^^ HELPER FUNCTIONS ^^^^^^^^^^
+
+//========== CHAT ==========
+
+// Open our socket for chat for each client
 var socket = io()
 
+// called when the server emits a message event
 socket.on('message', function(data) {
     $('#chat-toggle-btn').css("border-style", "solid")
     $('#chat-toggle-btn').css("border-color", "white")
@@ -12,15 +43,12 @@ socket.on('message', function(data) {
     document.getElementById('chat-messages').scrollTop = 10000
 })
 
-function startChat() {
-    socket = io()
-}
-
 function sendChatMessage() {
     let message = $('#chat-typed-message').val()
     socket.emit('message', message)
     $('#chat-typed-message').val('')
 }
+
 $('html').click(function() {
     $('#chat-box').hide()
 })
@@ -41,10 +69,9 @@ $('#chat-toggle-btn').click(function(event) {
     })
     $('#chat-box').toggle()
 })
+//^^^^^^^^^^ CHAT ^^^^^^^^^^
 
-function clickMe() {
-    alert('Javascript works!')
-}
+//========== MEMBERS ==========
 
 function membersRegister() {
     let tmz = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -122,3 +149,4 @@ function resetRegisterFields() {
     $("#registerFormScreenName").removeClass("is-invalid")
     $("#registerFormScreenNameInfo").text("")
 }
+//^^^^^^^^^^ MEMBERS ^^^^^^^^^^

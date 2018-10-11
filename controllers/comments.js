@@ -1,67 +1,53 @@
 import Comment from '../models/comment'
 
-// creates comment and returns new comment
-exports.createOne = async (data) => {
-    try {
-        return await Comment.create(data)
-    } catch (err) {
-        return console.error(err.message)
+// create a comment
+exports.create = (req, res) => {
+    Comment.create(req.body).then((comment) => {
+        res.status(200).send(comment)
+    }).catch((error) => {
+        res.status(400).send(error.message)
+        console.error(error.message)
+    })
+}
+
+// get all comments or a specific comment by query term ?_id=
+exports.get = (req, res) => {
+
+    // by query term
+    if(req.query._id) {
+        Comment.find({ _id: req.query._id }).limit(1).then((comments) => {
+            res.status(200).send(comments[0])
+        }).catch((error) => {
+            res.status(400).send(error.message)
+            console.error(error.message)
+        })
+    } else {
+        //get all
+        Comment.find().then((comments) => {
+            res.status(200).send(comments)
+        }).catch((error) => {
+            res.status(400).send(error.message)
+            console.error(error.message)
+        })
     }
 }
 
-// returns single comment by _id
-exports.getOne = async (id) => {
-    try {
-        return await Comment.findById(id)
-    } catch (err) {
-        return console.error(err.message)
-    }
+// updates one comment by _id
+exports.update = (req, res) => {
+    Comment.updateOne({ _id: req.query._id }, req.body).then((comment) => {
+        res.status(200).send(comment)
+    }).catch((error) => {
+        res.status(400).send(error.message)
+        console.error(error.message)
+    })
 }
 
-// returns array of comments that match query
-exports.getMany = async (query) => {
-    try {
-        return await Comment.find(query)
-    } catch (err) {
-        return console.error(err.message)
-    }
+// deletes one comment by _id
+exports.delete = (req, res) => {
+    Comment.deleteOne({ _id: req.query._id }).then((comment) => {
+        res.status(200).send(comment)
+    }).catch((error) => {
+        res.status(400).send(error.message)
+        console.error(error.message)
+    })
 }
-
-// updates comment by _id and returns updated comment
-exports.updateOne = async (id, updatedData) => {
-    try {
-        return await Comment.findByIdAndUpdate(id, updatedData)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// updates comments that match query and returns query result
-exports.updateMany = async (query, updatedData) => {
-    try {
-        return await Comment.updateMany(query, updatedData)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// delete comment by _id and returns deleted comment
-exports.deleteOne = async (id) => {
-    try {
-        return await Comment.findByIdAndRemove(id)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// deletes comments that match query and returns query result
-exports.deleteMany = async (query) => {
-    try {
-        return await Comment.deleteMany(query)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// Export our model to be used by the router if needed
-exports.Comment = Comment

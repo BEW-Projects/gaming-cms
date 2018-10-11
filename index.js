@@ -5,13 +5,12 @@ import nunjucks from 'nunjucks'
 import mongoose from 'mongoose'
 import session from 'express-session'
 import bodyParser from 'body-parser'
-import chat from './models/chat'
 const MongoStore = require('connect-mongo')(session)
 const app = express()
 
 // Custom imports and variables
 import routes from './routes'
-
+import Chat from './models/chat'
 
 // Connect to our database and set up our sessions
 mongoose.connect(process.env.MONGODB || `mongodb://localhost/${process.env.npm_package_name}`, {
@@ -49,22 +48,24 @@ let server = app.listen(process.env.PORT || 3000, () => {
     console.log("App is started on port 3000!")
 })
 
- // Socket.io
+ // Socket.io for chat
  const io = require('socket.io')(server)
 
  io.on('connection', (socket) => {
+
+    // not used currently
      socket.on('disconnect', function(){
 
      })
 
+    // called when client side javascript emits message event
      socket.on('message', function(msg) {
-        chat.create({
+        Chat.create({
                  message: msg,
                  screenName: routes.screenName
              }).then((chat) => {
                  io.emit('message', chat)
              })
-
      })
  })
 

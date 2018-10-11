@@ -2,7 +2,7 @@
 
 {% block body %}
     {% block articlesNewForm %}
-    <form class="form" action="/articles" method="post">
+    <form id="articles-new-form" class="form" onsubmit="event.preventDefault();controllerCreate('articles');">
         Title: <br>
         <input type="text" name="title" value=""><br><br>
         Content: <br>

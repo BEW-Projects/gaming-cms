@@ -5,30 +5,30 @@ const defaultConfigurations = {
     'currentTheme': 'default',
     'siteName': 'My Site'
 }
+
 // initializes configuration if none exists
 const initialize = async () => {
     try {
         for (var config in defaultConfigurations) {
-            await exports.createOne(config, defaultConfigurations[config])
+            await exports.create(config, defaultConfigurations[config])
         }
-    } catch (err) {
-        return console.error(err.message)
+    } catch (error) {
+        return console.error(error.message)
     }
 }
 
 // creates configuration and returns new configuration Object
-exports.createOne = async (name, value) => {
+exports.create = async (name, value) => {
     try {
         let config = await Configuration.find({ name: name }).limit(1)
-        if (config.length > 0) {
-            return
+        if (config.length == 0) {
+            return await Configuration.create({
+                name: name,
+                value: value
+            })
         }
-        return await Configuration.create({
-            name: name,
-            value: value
-        })
-    } catch (err) {
-        return console.error(err.message)
+    } catch (error) {
+        return console.error(error.message)
     }
 }
 
@@ -37,22 +37,19 @@ const getValue = async (name) => {
     try {
         let config = await Configuration.find({ name: name }).limit(1)
         return config[0].value
-    } catch (err) {
-        return console.error(err.message)
+    } catch (error) {
+        return console.error(error.message)
     }
 }
 
 // returns all configurations as a collection, initialize config if empty
 exports.get = async () => {
     try {
-        let configs = await Configuration.find({})
+        let configs = await Configuration.find()
         if (configs.length < Object.keys(defaultConfigurations).length) await initialize()
-        configs = await Configuration.find({})
+        configs = await Configuration.find()
         return configs.reduce((acc, cur) => ({...acc, [cur.name]: cur.value}), {})
     } catch (err) {
         return console.error(err.message)
     }
 }
-
-// Export our model to be used by the router if needed
-exports.Configuration = Configuration

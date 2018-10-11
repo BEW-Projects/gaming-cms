@@ -2,9 +2,9 @@
 
 {% block body %}
     {% block title %}
-        <p><u>{{ title }}</u></p>
+        <p><u>{{ page.title }}</u></p>
     {% endblock %}
     {% block content %}
-        {{ content | safe }}
+        {{ page.content | safe }}
     {% endblock %}
 {% endblock %}

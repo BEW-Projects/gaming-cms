@@ -1,143 +1,66 @@
 import Article from '../models/article'
 
-// createArticleRoute
-exports.createArticleRoute = (req, res) => {
-    exports.createOne(req.body).then(article => {
-        if (req.header('Content-Type') == 'application/json') {
-            res.send({
-                article: article
-            })
-        } else {
-            res.redirect(`/articles?_id=${article._id}`)
-        }
+// render new article form
+exports.new = (req, res) => {
+    res.render('modules/articles/articles-new')
+}
+
+// create an article
+exports.create = (req, res) => {
+    Article.create(req.body).then((article) => {
+        res.status(200).send(article)
+    }).catch((error) => {
+        res.status(400).send(error.message)
+        console.error(error.message)
     })
 }
 
-// getArticlesRoute
-exports.getArticlesRoute = (req, res) => {
-    exports.getMany(req.query).then(articles => {
-        if (req.header('Content-Type') == 'application/json') {
-            res.send({
+// get all articles or a specific article by query term ?_id=
+exports.get = (req, res) => {
+
+    // by query term
+    if(req.query._id) {
+
+        // make sure our query term is a valid object id
+        if(!/^[0-9a-fA-F]{24}$/.test(req.query._id)) {
+            return res.render('modules/app/404', { reason: 'Invalid Article Id or query term!' })
+        }
+
+        Article.find({ _id: req.query._id }).limit(1).then((articles) => {
+            res.render('modules/articles/articles-show', {
+                article: articles[0]
+            })
+        }).catch((error) => {
+            console.error(error.message)
+        })
+    } else {
+        //get all
+        Article.find().then((articles) => {
+            res.render('modules/articles/articles', {
                 articles: articles
-            })
-        } else {
-            if (articles.length > 1 || Object.keys(req.query).length == 0) {
-                res.render('modules/articles/articles', {
-                    articles: articles
-                })
-            } else {
-                res.render('modules/articles/articles-show', {
-                    article: articles[0]
-                })
-            }
-        }
+            } )
+        }).catch((error) => {
+            console.error(error.message)
+        })
+    }
+}
+
+// updates one article by _id
+exports.update = (req, res) => {
+    Article.updateOne({ _id: req.query._id }, req.body).then((article) => {
+        res.status(200).send(article)
+    }).catch((error) => {
+        res.status(400).send(error.message)
+        console.error(error.message)
     })
 }
 
-// updateArticlesRoute
-exports.updateArticlesRoute = (req, res) => {
-    exports.updateMany(req.query, req.body).then(articles => {
-        if (req.header('Content-Type') == 'application/json') {
-            res.send({
-                articles: articles
-            })
-        } else {
-            if (articles.length > 1) {
-                res.render('modules/articles/articles', {
-                    articles: articles
-                })
-            } else {
-                res.render('modules/articles/articles-show', {
-                    article: articles[0]
-                })
-            }
-        }
+// deletes one article by _id
+exports.delete = (req, res) => {
+    Article.deleteOne({ _id: req.query._id }).then((article) => {
+        res.status(200).send(article)
+    }).catch((error) => {
+        res.status(400).send(error.message)
+        console.error(error.message)
     })
 }
-
-// deleteArticlesRoute
-exports.deleteArticlesRoute = (req, res) => {
-    exports.deleteMany(req.query).then(articles => {
-        if (req.header('Content-Type') == 'application/json') {
-            res.send({
-                articles: articles
-            })
-        } else {
-            if (articles.length > 1) {
-                res.render('modules/articles/articles', {
-                    articles: articles
-                })
-            } else {
-                res.render('modules/articles/articles-show', {
-                    article: articles[0]
-                })
-            }
-        }
-    })
-}
-
-// creates article and returns new article object
-exports.createOne = async (data) => {
-    try {
-        return await Article.create(data)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// returns article by _id
-exports.getOne = async (id) => {
-    try {
-        return await Article.findById(id)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// returns array of articles that match query
-exports.getMany = async (query) => {
-    try {
-        return await Article.find(query)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// update article by _id and return updated article
-exports.updateOne = async (id, updatedData) => {
-    try {
-        return await Article.findByIdAndUpdate(id, updatedData)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// updates articles matching query and returns query results
-exports.updateMany = async (query, updatedData) => {
-    try {
-        return await Article.updateMany(query, updatedData)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// delete article by _id and return deleted article
-exports.deleteOne = async (id) => {
-    try {
-        return await Article.findByIdAndRemove(id)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// delete articles matching query and return query results
-exports.deleteMany = async (query) => {
-    try {
-        return await Article.deleteMany(query)
-    } catch (err) {
-        return console.error(err.message)
-    }
-}
-
-// Export our model to be used by the router if needed
-exports.Article = Article
